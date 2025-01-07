@@ -1,8 +1,8 @@
 import './App.css';
-import Todolist from './components/Todolist';
+import Todolist from './components/Todolist/todolist';
+import Login from './components/Login/login';
+import SignUp from './components/SignUp/signup';
 import Home from './components/home/home';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {

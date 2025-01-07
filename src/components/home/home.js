@@ -1,39 +1,79 @@
-import React from "react";
-import './home.css';
 import { useNavigate } from 'react-router-dom';
-import image from '../../assets/Home-image.png'
+import './home.css';
+import homeimage from '../../assets/todoimg.jpg';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
+
+
 const Home = ()=>{
 
     const navigate = useNavigate();
 
-    const startbtn = ()=> {
+
+    const onGetStartedToDo = ()=> {
+
         navigate("/todolist");
     }
 
-    const logout = ()=> {
-        navigate("/login");
-    }
+
+        const onLogoutTodo = async() => {
+
+            try {
+                
+                await signOut(auth);
+
+                navigate("/login");
+            } 
+            catch (error) {
+                alert("error");
+            }
+        }
     
     return(
-        <>
-        <div className="home_main_cont">
-            <div className="left_cont">
-                <h2 className="home-head">Todo-List</h2>
-                <img className="image" src={image}/>
-            </div>
-            <div className="right_main_cont">
-                <div className="right_btn">
-                <button onClick={logout} className="btn btn-danger">Logout</button>
+
+       <div className='home-cont'>
+
+                <div className='myhome'>
+
+                    <div className='left-cont'>
+
+                        <img src={homeimage} className='myimg' alt=''/>
+
+                    </div>
+
+                    <div className='right-cont'>
+                           
+                            <div className='right-body'>
+
+                                <h3> Bulid Your To-Do List </h3>
+
+                                <h4> Simple tool to organise everything. </h4>
+
+
+                                <div className='myinfo'>
+
+                                    <p> Add your daily tasks in a powerful tool that helps you organize and prioritize your tasks.</p>
+
+                                </div>
+
+                                <br/>
+
+                                <button className='btn start' onClick={onGetStartedToDo}> Get Started </button>
+
+                            </div>
+
+                            <div className='logbtn'>
+
+                                     <button className='btn btn-danger' onClick={onLogoutTodo}> LogOut </button> 
+
+                            </div>
+
+                    </div>
+
+
                 </div>
-                <div className="right_cont">
-                <h2>Productive Mind</h2>
-                <p>With only the features you need, Organic Mind is customized for individuals seeking a stress-free way to stay focused on their goals, projects, and tasks.</p>
-                <br/>
-                <button onClick={startbtn} className="w-25 btn btn-warning">Get Started</button>
-                </div>
-            </div>
-        </div>
-        </>
+
+       </div>
     )
 }
 

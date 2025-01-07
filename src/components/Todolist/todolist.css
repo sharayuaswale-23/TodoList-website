@@ -1,0 +1,228 @@
+.todo-main-cont{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+  }
+  .sidebar-main-cont{
+    width: 20%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+   background-color: #fcfaf8;
+    /* border: 1px solid black; */
+    padding: 10px;
+  }
+  .sidebar-main-cont button{
+    margin: 10px 0px;
+    padding: 10px;
+  }
+  .sidebar-main-cont select{
+    margin: 10px 0px;
+    padding: 10px;
+  }
+  .side-button{
+  
+    width: 100%;
+    /* border: 1px solid black; */
+  }
+  .side-button button{
+  
+    background-color: transparent;
+    border: none;
+  }
+  .side-btn-cont{
+  
+    width: 100%;
+  
+  }
+  .side-btn-cont button{
+  
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+  
+  }
+  .add-cont button{
+  
+    border: none;
+    background-color: transparent;
+  }
+  .plusAdd{
+  
+     font-size: 25px;
+     color: #a81f00;
+  }
+  
+  .searchinput{
+    outline: none;
+  }
+  
+  
+  
+  
+  .priority-section option{
+  
+    border: none;
+    outline: none;
+  }
+  
+  .side-button button:hover{
+  
+    background-color: #f5eaea;
+    color: #a81f00;
+  } 
+  
+  
+  
+  button:focus{
+  
+    outline: none;
+  }
+  .main-cont{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    padding: 25px;
+  }
+  .addbtn{
+    padding: 5px;
+    margin: 5px;
+  }
+  .filter-button{
+    display: flex;
+    flex-direction: column;
+  }
+  .form-container{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+  .form-container input{
+    margin: 5px;
+    border-radius: 8px;
+  }
+  .form-container textarea{
+    margin: 5px;
+    border-radius: 8px;
+  }
+  .form-container select{
+    margin: 5px;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .form-container button{
+    margin: 5px;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-left: 5px;
+  }
+  .btndiv{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .ul-list-cont{
+    list-style: none;
+  }
+  .list-cont{
+    width: 100%;
+    margin: 5px;
+    padding: 10px;
+  }
+  .data-cont{
+    width: 100%;
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    margin: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .list-item{
+    width: 50%;
+  }
+  .list-item-lower{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .list-upper-part{
+    display: flex;
+    gap: 2%;
+  }
+  .check-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .title-desc{
+    display: flex;
+    
+  }
+  .functionbtn{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .icon{
+    margin: 5px;
+    font-size: 25px;
+    color: #a81f00;
+  }
+  
+  .right-addbtn button{
+  background-color: transparent;
+  border: none;
+  
+  }
+  
+  .btndiv button{
+  
+    background-color: #a81f00;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+  }
+  
+  .title-des-comment-content{
+  
+    border-top: 1px solid rgb(167, 164, 164);
+    border-bottom: 1px solid rgb(180, 179, 179);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  
+  }
+  
+  .checkbox-box{
+  
+    margin-right: 15px;
+  }
+  
+  .left-cont-check-des{
+  
+    display: flex;
+  
+  }
+  
+  ul{
+  
+    list-style: none;
+  }
+  
+  .form-container input{
+  
+  outline: none;
+  }
+  
+  .form-container textarea{
+  
+    outline: none;
+  }
