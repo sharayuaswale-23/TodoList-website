@@ -303,8 +303,7 @@ outline: none;
 
 .form-container input,
 .form-container textarea,
-.form-container select,
-.form-container .datepicker {
+.form-container select {
   width: 100%; 
   padding: 10px;
   margin: 10px 0;
@@ -315,15 +314,11 @@ outline: none;
 
 .form-container input:focus,
 .form-container textarea:focus,
-.form-container select:focus ,
-.form-container .datepicker:focus
-{
+.form-container select:focus {
   border-color: #a81f00; 
   box-shadow: 0 0 5px rgba(168, 31, 0, 0.5); 
 }
-.datepicker{
-  width: 100%;
-}
+
 .form-container .btndiv {
   display: flex;
   justify-content: flex-end;

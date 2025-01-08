@@ -286,7 +286,7 @@ const Todolist = () => {
                   <DatePicker
                     selected={newTask.day}
                     onChange={(date) => setNewTask({ ...newTask, day: date })}
-                    className="mt-3 w-100 datepicker"
+                    className="mt-3 datepicker"
                     dateFormat="yyyy-MM-dd"
                   />
                 </div>
@@ -368,6 +368,9 @@ const Todolist = () => {
                       {/* <p>
                         {formattedDate} - {formattedDay}
                       </p> */}
+                      <p>
+                        {task.priority}
+                      </p>
                     </div>
                     <div className="title-des-comment-content">
                       <div className="left-cont-check-des">
@@ -634,6 +637,7 @@ const Todolist = () => {
                       {/* <p>
                         {formattedDate} - {formattedDay}
                       </p> */}
+                      <p>Priority: {task.priority}</p>
                     </div>
                     <div className="title-des-comment-content">
                       <div className="left-cont-check-des">
