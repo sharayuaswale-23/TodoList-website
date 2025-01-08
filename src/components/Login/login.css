@@ -68,12 +68,10 @@ button.btn {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
 }
 
 button.btn:hover {
   background-color: #a81f00;
-  transform: scale(1.02);
 }
 
 .mylogin {
@@ -119,6 +117,7 @@ button.btn:hover {
   .login-cont {
       width: 100%;
       padding: 100px;
+      justify-content: space-around;
   }
 
   .login-img {

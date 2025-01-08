@@ -23,7 +23,7 @@
 
 .heading {
   font-weight: bold;
-  color: #333;
+  color: #a81f00;
   margin-bottom: 20px;
 }
 
@@ -77,7 +77,7 @@ input.form-control {
 
 @media (min-width: 1440px) {
   .signup-cont {
-      max-width: 600px;
+      max-width: 520px;
   }
   .signup-form {
     padding: 40px;
