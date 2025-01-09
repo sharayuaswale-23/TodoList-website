@@ -6,11 +6,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #f8f9fa;
 }
 .signup-cont{
   width: 40%;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
   padding: 2%;
+  background: #fff;
 }
 .formsubmit h3{
   text-align: center;
