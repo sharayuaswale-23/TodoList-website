@@ -1,13 +1,28 @@
 import { useNavigate } from 'react-router-dom';
 import './home.css';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
+import { useEffect } from 'react';
 
 
 
 const Home = ()=>{
 
     const navigate = useNavigate();
+
+    useEffect( ()=> {
+    
+        const unLogin = onAuthStateChanged(auth, (user) => {
+
+            if( !user ){
+                navigate("/");
+            }
+        });
+
+        return () => unLogin();
+
+    }, [navigate]);
+    
 
 
     const onGetStartedToDo = ()=> {
