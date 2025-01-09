@@ -246,9 +246,10 @@ const TodoList = () => {
       <div className="add-cont">
               <button className="addbtn" onClick={() => setShowInputContainer(true)}>
                 <IoMdAddCircle className="plusAdd mr-1" /> Add task
-              </button>
+              </button> <br/> <br/>
+              <h3 className="ml-3">{filter}</h3> <br/>
             </div> <br/>
-            <h3>{filter}</h3> <br/>
+           
       {showInputContainer && (
        
         <div className="popup-overlay">
