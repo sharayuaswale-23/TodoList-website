@@ -12,6 +12,7 @@ import { HiMiniCalendarDays } from "react-icons/hi2";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FaBars } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
+import { TiDeleteOutline } from "react-icons/ti";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -286,14 +287,15 @@ const TodoList = () => {
                       {todo.comments &&
                         Object.keys(todo.comments).map((commentId) => (
                           <li key={commentId}>
-                            {todo.comments[commentId]}
-                            <RiDeleteBack2Fill
+                             <TiDeleteOutline
                                     style={{
                                       margin: "8px",
                                       color: "#a81f00",
                                     }}
                                     onClick={() => handleDeleteComment(todo.id, commentId)}
                                   />
+                            {todo.comments[commentId]}
+                          
                           </li>
                         ))}
                     </ul>
