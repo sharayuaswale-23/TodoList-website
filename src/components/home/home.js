@@ -34,9 +34,17 @@ const Home = ()=>{
 
                 <div className='myhome'>
 
-                    <div className='left'></div>
+                    <div className='left'>
+                    </div>
 
                                 <div className='right'>
+
+                                <div className='logbtn'>
+
+                                    <button className='mylogoutbtn' onClick={onLogoutTodo}> LogOut </button> 
+
+                                    </div>
+                                
 
                                     <div className='info'>
 
@@ -44,7 +52,7 @@ const Home = ()=>{
 
                                             <span className='todo'>  To-Do List </span>
 
-                                            <br/><br/>
+                                            <br/>
 
                                             <h4> Simple tool to organise everything </h4>
 
@@ -53,11 +61,7 @@ const Home = ()=>{
                                             <button className='mybtn' onClick={onGetStartedToDo}> Get Started </button>
                                             
                                     </div>
-                                    <div className='logbtn'>
-
-                                        <button className='mylogoutbtn' onClick={onLogoutTodo}> LogOut </button> 
-
-                                    </div>
+                                    
 
                                 </div>
 

@@ -5,8 +5,9 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #f9f9f9;
+  box-sizing: border-box;
 }
 
 .login-img {
@@ -89,10 +90,22 @@ button.btn:hover {
   text-decoration: underline;
 }
 
+
+@media (min-width: 768px) {
+  
+  .login-cont {
+    width: 100%;
+  }
+  .login-form {
+    width: 100%;
+    max-width: 450px;
+}
+
+}
+
 @media (min-width: 1024px) {
   .login-cont {
       flex-direction: row;
-      justify-content: space-between;
       align-items: center;
       padding: 40px;
   }

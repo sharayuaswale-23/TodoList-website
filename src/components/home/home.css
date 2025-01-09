@@ -1,6 +1,6 @@
 .home-cont {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   box-sizing: border-box;
 }
 
@@ -11,7 +11,6 @@
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
-  padding: 20px;
   box-sizing: border-box;
   background-position: center;
 }
@@ -20,14 +19,26 @@
 }
 
 .right {
-  padding: 20px;
   border-radius: 10px;
   width: 45%;
+  height: 100%;
   align-self: center;
+  display: flex;
+  flex-direction: column;
 }
-
+.logbtn{
+height: 10%;
+display: flex;
+justify-content: right;
+}
 .info{
    width: 90%;
+   height: 90%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: left;
+   padding: 5%;
 }
 .head {
   font-weight: 500;
@@ -51,7 +62,7 @@ h4 {
   width: 50%;
   max-width: 600px;
   background-color: rgba(248, 83, 24, 0.825);
-  height: 50px;
+  padding: 10px;
   font-size: 18px;
   color: white;
   border-radius: 20px;
@@ -69,116 +80,60 @@ h4 {
 }
 
 .mylogoutbtn {
-  width: 44%;
-  max-width: 600px;
+  padding: 2%;
   background-color:red;
-  height: 50px;
-  font-size: 18px;
+  font-size: 15px;
   color: white;
-  border-radius: 20px;
+  border-radius: 10px;
   border: none;
   outline: none;
   cursor: pointer;
 }
 
-
-@media (min-width: 1024px) {
-  .home-cont{
-  display: flex;
-  box-sizing: border-box;
-  background-position: center;
-}
-
-.left{
-  width: 55%;
-}
-
-.right {
-  padding: 20px;
-  border-radius: 10px;
-  width: 45%;
-  align-self: center;
-  background-color: transparent;
-  margin-left: 20px;
-
-}
-.para{
-  padding-top: 10px;
-}
-
-}
-
-@media (max-width: 768px) {
-  
+@media (max-width: 768px){
   .left{
     display: none;
   }
   .right{
-    background-color: rgba(255, 255, 255, 0.855);
-    width: 90%;
-    height: 80%;
-    padding-left: 40px;
+    width: 100%;
   }
   .info{
-    margin-top: 40px;
+    background: transparent;
+    background-color: rgba(255, 255, 255, 0.855);
+    padding: 5%;
+    margin: 7%;
+    border-radius: 15px;
+    height: 90%;
   }
-  .head{
-    font-size: 42px;
-  }
-  .para{
-    font-size: 16px;
-  }
-  .todo{
-    font-size: 42px;
-  }
-  h4{
-    font-size: 22px;
-  }
-  .mybtn {
-    width: 50%;
-    height: 38px;
-    font-size: 12px;
-  }
-  .mylogoutbtn{
-    width: 45%;
-    height: 37px;
-    font-size: 13px;
+  .logbtn{
+    height: 10%;
   }
 }
-
-
-@media (max-width: 375px) {
-  
+@media (max-width: 1024px){
+  .info{
+    padding: 10%;
+    height: 95%;
+  }
+  .logbtn{
+    height: 5%;
+  }
+}
+@media (max-width: 1024px) and (max-height: 1180px){
   .left{
-    display: none;
-  }
-  .right{
-    background-color: rgba(255, 255, 255, 0.855);
-    width: 90%;
-    height: 80%;
-  }
-  .head{
-    font-size: 20px;
-  }
-  .para{
-    font-size: 10px;
-  }
-  .todo{
-    font-size: 20px;
-  }
-  h4{
-    font-size: 15px;
-    margin-top: 20px;
-  }
-  .mybtn {
-    width: 50%;
-    height: 38px;
-    font-size: 12px;
-  }
-  .mylogoutbtn{
-    width: 45%;
-    height: 37px;
-    font-size: 13px;
-  }
-
+  display: none;
+}
+.right{
+  width: 100%;
+}
+.info{
+  background: transparent;
+  background-color: rgba(255, 255, 255, 0.855);
+  padding: 5%;
+  margin: 12% 7%;
+  border-radius: 15px;
+  height: 95%;
+}
+.logbtn{
+  height: 5%;
+}
 }

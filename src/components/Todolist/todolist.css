@@ -64,15 +64,14 @@
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 200;
   }
   .popup-container {
     background-color: white;
     padding: 20px;
     border-radius: 12px; 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
-    width: 80%; 
-    height: 80%;
+    width: 100vw; 
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -98,20 +97,7 @@
   width: 100%;
   height: 100vh;
 }
-/* .todo-main-cont{
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-} */
-/* .sidebar-main-cont{
-  width: 20%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
- background-color: #fcfaf8;
-  padding: 10px;
-} */
+
 .sidebar-main-cont button{
   margin: 10px 0px;
   padding: 10px;
@@ -189,32 +175,6 @@ button:focus{
 .filter-button{
   display: flex;
   flex-direction: column;
-}
-.form-container{
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  border: 1px solid black;
-  border-radius: 15px;
-}
-.form-container input{
-  margin: 5px;
-  border-radius: 8px;
-}
-.form-container textarea{
-  margin: 5px;
-  border-radius: 8px;
-}
-.form-container select{
-  margin: 5px;
-  border-radius: 8px;
-  padding: 10px;
-}
-.form-container button{
-  margin: 5px;
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-left: 5px;
 }
 .btndiv{
   display: flex;
@@ -316,17 +276,6 @@ right: 20px;
 ul{
   list-style: none;
 }
-.form-container{
-  background-color: rgb(252, 251, 250);
-  width: 50%;
-  border: none;
-}
-.form-container input{
-outline: none;
-}
-.form-container textarea{
-  outline: none;
-}
 .save-cont{
   background-color: rgb(248, 245, 245);
   border-radius: 10px;
@@ -334,6 +283,7 @@ outline: none;
   margin-bottom: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
 }
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -344,8 +294,8 @@ outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
 }
+
 .popup-container {
   background-color: white;
   padding: 20px;
@@ -359,6 +309,7 @@ outline: none;
   align-items: center;
   overflow: hidden; 
 }
+
 .form-container {
   width: 100%; 
   height: 100%; 
@@ -366,8 +317,9 @@ outline: none;
   flex-direction: column;
   justify-content: space-between; 
   padding: 20px;
-  border-radius: 8px; 
+  border-radius: 15px;
 }
+
 .form-container input,
 .form-container textarea,
 .form-container select {
@@ -378,18 +330,21 @@ outline: none;
   font-size: 16px; 
   outline: none; 
 }
+
 .form-container input:focus,
 .form-container textarea:focus,
 .form-container select:focus {
   border-color: #a81f00; 
   box-shadow: 0 0 5px rgba(168, 31, 0, 0.5); 
 }
+
 .form-container .btndiv {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
 }
+
 .form-container .btndiv button {
   padding: 10px 20px;
   border: none;
@@ -398,14 +353,71 @@ outline: none;
   cursor: pointer;
   transition: background-color 0.3s ease; 
 }
+
 .form-container .btndiv button:first-child {
   background-color: #a81f00; 
   color: white;
 }
+
 .form-container .btndiv button:last-child {
   background-color: #ddd; 
   color: #333;
 }
+
 .form-container .btndiv button:hover {
   opacity: 0.9; 
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px){
+  .popup-container{
+    height: 40%;
+    width: 40%;
+  }
+}
+@media (max-width: 1024px) and (max-height: 600px){
+  .popup-container{
+    height: auto;
+    width: 40%;
+  }
+}
+@media (max-width: 930px) {
+  .popup-container {
+    width: 75%; 
+    height: auto; 
+    padding: 15px;
+  }
+
+  .form-container {
+    padding: 10px;
+  }
+
+  .form-container input,
+  .form-container textarea,
+  .form-container select {
+    font-size: 14px; 
+  }
+
+  .form-container .btndiv button {
+    padding: 8px 25px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-container {
+    width: 75%; 
+    border-radius: 0; 
+  }
+
+  .form-container input,
+  .form-container textarea,
+  .form-container select {
+    font-size: 12px;
+  }
+
+  .form-container .btndiv button {
+    padding: 8px 25px;
+    font-size: 12px;
+  }
 }

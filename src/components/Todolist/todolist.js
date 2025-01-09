@@ -3,17 +3,12 @@ import { ref, set, push, onValue, remove, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import "./todolist.css"; // Optional for styling
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import { FaComment } from "react-icons/fa";
-import { RiDeleteBack2Line } from "react-icons/ri";
 import { FaInbox } from "react-icons/fa";
 import { MdToday } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
 import { IoTodayOutline } from "react-icons/io5";
 import { HiMiniCalendarDays } from "react-icons/hi2";
-import { IoMdAdd } from "react-icons/io";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FaBars } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
