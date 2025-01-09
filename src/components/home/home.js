@@ -35,7 +35,7 @@ const Home = ()=>{
         <div className='left-blank'></div>
         <div className='right-cont'>
             <div className='top-cont'>
-                <button className='btn btn-danger'>Log Out</button>
+                <button onClick={onLogoutTodo} className='btn btn-danger'>Log Out</button>
             </div>
             <div className='lower-cont'>
                 <h2>Build Your <span>To-Do List</span></h2>

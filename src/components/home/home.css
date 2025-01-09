@@ -59,7 +59,7 @@ font-weight: 700;
   cursor: pointer;
   color: white;
   padding: 2%;
-  width: 30%;
+  width: auto;
 }
 .lower-cont button:hover{
   background-color: rgb(253,73,8);
@@ -71,6 +71,7 @@ font-weight: 700;
 .right-cont{
   width: 100%;
   background: transparent;
+  padding: 2%;
 }
 .lower-cont{
   padding: 4%;
