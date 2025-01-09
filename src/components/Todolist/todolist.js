@@ -31,8 +31,6 @@ const TodoList = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
 
-  // const db = getDatabase();
-  // const auth = getAuth();
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -77,7 +75,9 @@ const TodoList = () => {
     });
     setInputFields({ title: "", description: "", priority: "Priority 1", date: "" });
     setShowInputContainer(false);
-    setIsSidebarOpen(!isSidebarOpen);
+    if(isSidebarOpen === true){
+      setIsSidebarOpen(!isSidebarOpen);
+    }
   };
 
   const handleDeleteTodo = (id) => {
@@ -124,8 +124,8 @@ const TodoList = () => {
     const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
     if (filter === "Inbox") return !todo.completed;
     if (filter === "Completed") return todo.completed;
-    if (filter === "Today") return todo.date === today;
-    if (filter === "Tomorrow") return todo.date === tomorrow;
+    if (filter === "Today") return !todo.completed && todo.date === today;
+    if (filter === "Tomorrow") return !todo.completed && todo.date === tomorrow;
     if (filter === "Upcoming") {
       if (selectedDate) {
         return todo.date === selectedDate;
