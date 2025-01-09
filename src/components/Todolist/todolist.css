@@ -1,4 +1,5 @@
 /* Base styles for large devices */
+/* Base styles for large devices */
 .todo-main-cont {
   display: flex;
   flex-direction: row;
@@ -8,6 +9,7 @@
 
 .sidebar-main-cont {
   width: 20%;
+  padding: 2%;
   min-width: 250px;
   background-color: #fcfaf8;
   height: 100vh;
@@ -16,31 +18,29 @@
   top: 0;
   z-index: 100;
   transition: transform 0.3s ease-in-out;
-  padding: 20px;
 }
 
 .main-cont {
   margin-left: 20%;
   width: 80%;
   padding: 20px;
-  padding-right: 8%;
   background-color: #e5e7eb;
   overflow-y: auto;
   height: 100vh;
 }
 
 /* Styles for small devices */
-@media (max-width: 930px) {
+@media (max-width: 768px) {
   .todo-main-cont {
     flex-direction: column;
   }
 
   .sidebar-main-cont {
-    width: 70%;
+    width: 100%;
     height: 100%;
     transform: translateX(-100%);
     position: fixed;
-    padding-top: 12%;
+    padding-top: 15%;
   }
 
   .sidebar-main-cont.active {
@@ -50,7 +50,7 @@
   .main-cont {
     margin-left: 0;
     width: 100%;
-    padding-top: 16%;
+    padding-top: 20%;
   }
 
   .toggle-btn {
@@ -64,6 +64,10 @@
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    z-index: 200;
+  }
+  .popup-overlay{
+    z-index: 200;
   }
   .popup-container {
     background-color: white;
@@ -88,7 +92,12 @@
   .left-cont-check-des{
     width: 90%;
   }
-  
+}
+@media (max-width: 1024px){
+  .main-cont {
+    padding-left: 10%;
+    padding-top: 5%;
+  }
 }
 
 
@@ -160,14 +169,6 @@
 button:focus{
   outline: none;
 }
-/* .main-cont{
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  padding: 25px;
-  background-color: #e5e7eb;
-} */
 .addbtn{
   padding: 5px;
   margin: 5px;
@@ -294,6 +295,7 @@ ul{
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .popup-container {
