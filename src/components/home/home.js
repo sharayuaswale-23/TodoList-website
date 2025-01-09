@@ -34,30 +34,33 @@ const Home = ()=>{
 
                 <div className='myhome'>
 
-                                <div className='myinfo'>
+                    <div className='left'></div>
 
-                                    <span className='head'> Bulid Your  </span>
+                                <div className='right'>
 
-                                    <span className='todo'>  To-Do List </span>
+                                    <div className='info'>
 
-                                    <br/><br/>
+                                            <span className='head'> Bulid Your  </span>
 
-                                    <h4> Simple tool to organise everything </h4>
+                                            <span className='todo'>  To-Do List </span>
 
+                                            <br/><br/>
 
-                                    <p className='para'> <b> Add your daily tasks in a powerful tool that helps you organize and prioritize your tasks. </b> </p>
+                                            <h4> Simple tool to organise everything </h4>
 
-                                    <button className='mybtn' onClick={onGetStartedToDo}> Get Started </button>
+                                            <p className='para'> <b> Add your daily tasks in a powerful tool that helps you organize and prioritize your tasks. </b> </p>
+
+                                            <button className='mybtn' onClick={onGetStartedToDo}> Get Started </button>
+                                            
+                                    </div>
+                                    <div className='logbtn'>
+
+                                        <button className='mylogoutbtn' onClick={onLogoutTodo}> LogOut </button> 
+
+                                    </div>
 
                                 </div>
 
-                                <br/>
-                            
-                                <div className='logbtn'>
-
-                                     <button className='mylogoutbtn' onClick={onLogoutTodo}> LogOut </button> 
-
-                                </div>
                 </div>
        </div>
 

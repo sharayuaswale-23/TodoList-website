@@ -7,52 +7,50 @@
 .myhome {
   width: 100%;
   height: 100vh;
-  background-image: url("../../assets/home1.webp");
+  background-image: url("../../assets/myhomeimg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 20px;
   box-sizing: border-box;
+  background-position: center;
+}
+.left{
+  width: 55%;
 }
 
-.myinfo {
-  background-color: rgba(255, 255, 255, 0.8);
+.right {
   padding: 20px;
   border-radius: 10px;
-  max-width: 600px;
-  width: 70%;
+  width: 45%;
+  align-self: center;
 }
 
+.info{
+   width: 90%;
+}
 .head {
-  font-size: 2.5rem;
   font-weight: 500;
+  font-size: 40px;
 }
 
 .todo {
-  font-size: 3rem;
   color: red;
+  font-size: 40px;
   font-weight: 700;
 }
 
 h4 {
-  font-size: 1.5rem;
-  margin: 10px 0;
   font-family: Lucida Sans;
 }
 
-.para {
-  font-size: 1rem;
-  margin: 20px 0;
-  line-height: 1.5;
+.para{
+  margin-top: 15px;
 }
-
 .mybtn {
-  width: 60%;
+  width: 50%;
   max-width: 600px;
-  background-color: rgba(253, 73, 8, 0.825);
+  background-color: rgba(248, 83, 24, 0.825);
   height: 50px;
   font-size: 18px;
   color: white;
@@ -71,90 +69,116 @@ h4 {
 }
 
 .mylogoutbtn {
-  background-color: red;
-  border-radius: 5px;
+  width: 44%;
+  max-width: 600px;
+  background-color:red;
+  height: 50px;
+  font-size: 18px;
   color: white;
+  border-radius: 20px;
   border: none;
   outline: none;
-  width: 60%;
-  max-width: 200px;
-  height: 40px;
-  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.mylogoutbtn:hover {
-  background-color: darkred;
 }
 
 
 @media (min-width: 1024px) {
-  .myhome {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .home-cont{
+  display: flex;
+  box-sizing: border-box;
+  background-position: center;
+}
 
-  .myinfo {
-    text-align: left;
-    padding: 20px;
-    width: 50%;
-    background-color: transparent;
+.left{
+  width: 55%;
+}
+
+.right {
+  padding: 20px;
+  border-radius: 10px;
+  width: 45%;
+  align-self: center;
+  background-color: transparent;
+  margin-left: 20px;
+
+}
+.para{
+  padding-top: 10px;
+}
+
+}
+
+@media (max-width: 768px) {
+  
+  .left{
+    display: none;
+  }
+  .right{
+    background-color: rgba(255, 255, 255, 0.855);
+    width: 90%;
+    height: 80%;
+    padding-left: 40px;
+  }
+  .info{
+    margin-top: 40px;
+  }
+  .head{
+    font-size: 42px;
   }
   .para{
-    font-weight: 400;
+    font-size: 16px;
   }
-  .logbtn{
-    position: relative;
-    bottom:50%;
+  .todo{
+    font-size: 42px;
+  }
+  h4{
+    font-size: 22px;
+  }
+  .mybtn {
+    width: 50%;
+    height: 38px;
+    font-size: 12px;
   }
   .mylogoutbtn{
-    width: 100px;
-    height: 45px;
-   
+    width: 45%;
+    height: 37px;
+    font-size: 13px;
   }
-
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  .myhome {
-    flex-direction: column;
-    justify-content: center;
-  }
 
-  .myinfo {
-    text-align: center;
-    width: 70%;
-  }
-  .mylogoutbtn{
-    width: 150px;
-    background-color: red;
-    height: 50px;
-    font-size: 18px;
-    color: white;
-    border-radius: 20px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    }
+@media (max-width: 375px) {
   
-}
-
-
-@media (max-width: 767px) {
-  .myhome {
-    flex-direction: column;
-    justify-content: center;
+  .left{
+    display: none;
   }
-
-  .myinfo {
-    text-align: center;
+  .right{
+    background-color: rgba(255, 255, 255, 0.855);
     width: 90%;
-    padding: 15px;
+    height: 80%;
   }
-  
-  .mylogoutbtn {
-    width: 200px;
+  .head{
+    font-size: 20px;
   }
+  .para{
+    font-size: 10px;
+  }
+  .todo{
+    font-size: 20px;
+  }
+  h4{
+    font-size: 15px;
+    margin-top: 20px;
+  }
+  .mybtn {
+    width: 50%;
+    height: 38px;
+    font-size: 12px;
+  }
+  .mylogoutbtn{
+    width: 45%;
+    height: 37px;
+    font-size: 13px;
+  }
+
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./todolist.css";
-import { ref, push, onValue, update, remove } from "firebase/database";
-import { database, auth } from "../../firebase";
+import { ref, set, push, onValue, remove, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import "./todolist.css"; // Optional for styling
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaComment } from "react-icons/fa";
@@ -15,688 +15,321 @@ import { IoTodayOutline } from "react-icons/io5";
 import { HiMiniCalendarDays } from "react-icons/hi2";
 import { IoMdAdd } from "react-icons/io";
 import { RiDeleteBack2Fill } from "react-icons/ri";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import the DatePicker CSS
-import { MdOutlineNavigateNext } from "react-icons/md";
+import { FaBars } from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
 
-const Todolist = () => {
-  const tasksRef = ref(database, "tasks");
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ title: "", description: "", priority: "Low", day: new Date() });
-  const [editTaskData, setEditTaskData] = useState(null);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [filter, setFilter] = useState("inbox");
-  const [priorityFilter, setPriorityFilter] = useState("all");
+const TodoList = () => {
+  const [todos, setTodos] = useState([]);
+  const [user, setUser] = useState(null);
+  const [showInputContainer, setShowInputContainer] = useState(false);
+  const [inputFields, setInputFields] = useState({
+    title: "",
+    description: "",
+    priority: "Priority 1",
+    date: "",
+  });
+  const [filter, setFilter] = useState("Inbox");
+  const [priorityFilter, setPriorityFilter] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [userUID, setUserUID] = useState(null);
-  const [isSidebarVisible, setSidebarVisible] = useState(true);
-  const [selectedWeekendDate, setSelectedWeekendDate] = useState(null); // State for weekend date
-
-  const [selectedFilterDate, setSelectedFilterDate] = useState(null); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
 
-  // Fetch tasks from Firebase
+  // const db = getDatabase();
+  // const auth = getAuth();
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserUID(user.uid);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        fetchTodos(currentUser.uid);
       } else {
-        setUserUID(null);
+        setUser(null);
+        setTodos([]);
       }
     });
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
 
-  useEffect(() => {
-    if (!userUID) return;
-
-    const userTasksRef = ref(database, `tasks/${userUID}`);
-    onValue(userTasksRef, (snapshot) => {
+  const fetchTodos = (userId) => {
+    const todosRef = ref(db, `todos/${userId}`);
+    onValue(todosRef, (snapshot) => {
       const data = snapshot.val();
-      const tasksArray = data
-        ? Object.entries(data).map(([id, task]) => ({ id, ...task }))
-        : [];
-      setTasks(tasksArray);
+      if (data) {
+        const loadedTodos = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        setTodos(loadedTodos);
+      } else {
+        setTodos([]);
+      }
     });
-  }, [userUID]);
-
-  const formatDateAndDay = (date) => {
-    const taskDate = new Date(date);
-    const options = { day: "2-digit", month: "short", year: "numeric", weekday: "long" };
-    return taskDate.toLocaleDateString(undefined, options); // e.g., "08 Jan 2025 (Wednesday)"
   };
 
-  // Function to categorize date as "Today", "Tomorrow", or "Upcoming"
-  const categorizeDate = (date) => {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-
-    const taskDate = new Date(date);
-
-    if (taskDate.toLocaleDateString() === today.toLocaleDateString()) {
-      return "today";
-    } else if (taskDate.toLocaleDateString() === tomorrow.toLocaleDateString()) {
-      return "tomorrow";
-    } else {
-      return "upcoming";
-    }
-  };
-
-  // Add a new task
-  const addTask = () => {
-    if (!newTask.title.trim()) {
-      alert("Title is required");
-      return;
-    }
-
-    const userTasksRef = ref(database, `tasks/${userUID}`);
-    push(userTasksRef, {
-      ...newTask,
+  const handleAddTodo = () => {
+    const userId = user.uid;
+    const todosRef = ref(db, `todos/${userId}`);
+    const newTodoRef = push(todosRef);
+    set(newTodoRef, {
+      ...inputFields,
       completed: false,
       comments: [],
-      category: categorizeDate(newTask.day),
     });
-
-    setNewTask({ title: "", description: "", priority: "Low", day: new Date() });
-    setShowAddForm(false);
+    setInputFields({ title: "", description: "", priority: "Priority 1", date: "" });
+    setShowInputContainer(false);
   };
 
-  const saveEditTask = () => {
-    if (!editTaskData.title.trim()) {
-      alert("Title is required");
-      return;
-    }
+  const handleDeleteTodo = (id) => {
+    const userId = user.uid;
+    const todoRef = ref(db, `todos/${userId}/${id}`);
+    remove(todoRef);
+  };
 
-    const taskRef = ref(database, `tasks/${userUID}/${editTaskData.id}`);
-    update(taskRef, {
-      ...editTaskData,
-      category: categorizeDate(editTaskData.day),
+  const handleEditTodo = (id) => {
+    const todo = todos.find((t) => t.id === id);
+    setInputFields({
+      title: todo.title,
+      description: todo.description,
+      priority: todo.priority,
+      date: todo.date,
     });
-
-    setEditTaskData(null);
+    setShowInputContainer(true);
+    handleDeleteTodo(id); // Remove old entry before editing
   };
 
-  // Toggle completion
-  const toggleCompletion = (id, completed) => {
-    const taskRef = ref(database, `tasks/${userUID}/${id}`);
-    update(taskRef, { completed: !completed });
+  const handleToggleComplete = (id) => {
+    const userId = user.uid;
+    const todoRef = ref(db, `todos/${userId}/${id}`);
+    const todo = todos.find((t) => t.id === id);
+    update(todoRef, { completed: !todo.completed });
   };
 
-  const deleteTask = (id) => {
-    const taskRef = ref(database, `tasks/${userUID}/${id}`);
-    remove(taskRef);
+
+  const handleAddComment = (id, comment) => {
+    const userId = user.uid;
+    const todoRef = ref(db, `todos/${userId}/${id}/comments`);
+    const newCommentRef = push(todoRef);
+    set(newCommentRef, comment);
   };
 
-  const addComment = (id, comment) => {
-    if (!comment.trim()) {
-      alert("Enter a comment");
-      return;
-    }
-
-    const task = tasks.find((task) => task.id === id);
-    if (task) {
-      const taskRef = ref(database, `tasks/${userUID}/${id}`);
-      update(taskRef, { comments: [...(task.comments || []), comment] });
-    }
+  const handleDeleteComment = (todoId, commentId) => {
+    const userId = user.uid;
+    const commentRef = ref(db, `todos/${userId}/${todoId}/comments/${commentId}`);
+    remove(commentRef);
   };
 
-  const deleteComment = (id, commentIndex) => {
-    const task = tasks.find((task) => task.id === id);
-    const updatedComments = task.comments.filter((_, index) => index !== commentIndex);
-    const taskRef = ref(database, `tasks/${userUID}/${id}`);
-    update(taskRef, { comments: updatedComments });
-  };
-
-  // Filter tasks
-
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "completed" && !task.completed) return false;
-    if (filter === "inbox" && task.completed) return false;
-    if (filter === "today" && task.category !== "today") return false;
-    if (filter === "tomorrow" && task.category !== "tomorrow") return false;
-    if (filter === "upcoming" && task.category !== "upcoming") return false;
-    if (priorityFilter !== "all" && task.priority !== priorityFilter) return false;
-  
-    // Apply selectedFilterDate for "upcoming" tasks
-    if (filter === "upcoming" && selectedFilterDate) {
-      const taskDate = new Date(task.day).toLocaleDateString();
-      const filterDate = new Date(selectedFilterDate).toLocaleDateString();
-      return taskDate === filterDate;
+  const filteredTodos = todos.filter((todo) => {
+    const today = new Date().toISOString().split("T")[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
+    if (filter === "Inbox") return !todo.completed;
+    if (filter === "Completed") return todo.completed;
+    if (filter === "Today") return todo.date === today;
+    if (filter === "Tomorrow") return todo.date === tomorrow;
+    if (filter === "Upcoming") {
+      if (selectedDate) {
+        return todo.date === selectedDate;
+      }
+      return todo.date > tomorrow;
     }
     return true;
-  });
-  // Search tasks
-  const searchedTasks = filteredTasks.filter((task) =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  }).filter((todo) => (priorityFilter ? todo.priority === priorityFilter : true));
+
+  const searchedTasks = filteredTodos.filter((todo) =>
+    todo.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <>
     <div className="lap-view">
+        
     <div className="todo-main-cont">
-      <div className="sidebar-main-cont">
-        <div className="add-cont">
-          <button className="addbtn" onClick={() => setShowAddForm(true)}>
-            <IoMdAddCircle className="plusAdd mr-1" /> Add task
-          </button>
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Search by title"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="m-2 searchinput"
-          />
-        </div>
+    <button className="toggle-btn" onClick={toggleSidebar}>
+        <FaBars />
+      </button>
+  
+      <div className={`sidebar-main-cont ${isSidebarOpen ? "active" : ""}`}>
+      <div className="add-cont">
+              <button className="addbtn" onClick={() => setShowInputContainer(true)}>
+                <IoMdAddCircle className="plusAdd mr-1" /> Add task
+              </button>
+            </div>
 
-        <div className="side-button">
-          <div className="side-btn-cont">
-            <button onClick={() => setFilter("inbox")}>
-              <FaInbox className="icons mr-2" />
-              Inbox
-            </button>
-          </div>
-          <div className="side-btn-cont">
-            <button onClick={() => setFilter("completed")}>
-              <MdOutlineTaskAlt className="icons mr-2" /> Completed
-            </button>
-          </div>
-          <div className="side-btn-cont">
-            <button onClick={() => setFilter("today")}>
-              <MdToday className="icons mr-2" />
-              Today
-            </button>
-          </div>
-          <div className="side-btn-cont">
-            <button onClick={() => setFilter("tomorrow")}>
-              <HiMiniCalendarDays className="icons mr-2" />
-              Tomorrow
-            </button>
-          </div>
-          <div className="side-btn-cont">
-            <button onClick={() => setFilter("upcoming")}>
-              <IoTodayOutline className="icons mr-2" />
-              Upcoming
-            </button>
-          </div>
-        </div>
-
-        <div className="priority-section">
-          <select
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-          >
-            <option value="all">All Priorities</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-          </select>
-        </div>
+            <div className="search-input">
+            <input
+                type="text"
+                placeholder="Search by title"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="m-2 searchinput"
+              />
+            </div>
+      <div className="side-button">
+      <div className="side-btn-cont">
+                <button onClick={() => setFilter("Inbox")}>
+                  <FaInbox className="icons mr-2 mt-1" />
+                  Inbox
+                </button>
+              </div>
+              <div className="side-btn-cont">
+                <button onClick={() => setFilter("Completed")}>
+                  <MdOutlineTaskAlt className=" icons mr-2 mt-1" /> Completed
+                </button>
+              </div>
+              <div className="side-btn-cont">
+                <button onClick={() => setFilter("Today")}>
+                  <MdToday className="icons mr-2 mt-1" />
+                  Today
+                </button>
+              </div>
+              <div className="side-btn-cont">
+                <button onClick={() => setFilter("Tomorrow")}>
+                  <HiMiniCalendarDays className="icons mr-2 mt-1" />
+                  Tomorrow
+                </button>
+              </div>
+              <div className="side-btn-cont">
+                <button onClick={() => setFilter("Upcoming")}>
+                  <IoTodayOutline className="icons mr-2 mt-1" />
+                  Upcoming
+                </button>
+              </div>
+              
       </div>
 
-      {/* --------------------------------------------right side------------------------------------------------ */}
+      <div className="priority-section">
+      {filter === "Upcoming" && (
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                  )}
+              <select
+                onChange={(e) => setPriorityFilter(e.target.value)} value={priorityFilter}
+              >
+               <option value="">All Priorities</option>
+          <option value="Priority 1">Priority 1</option>
+          <option value="Priority 2">Priority 2</option>
+          <option value="Priority 3">Priority 3</option>
+          <option value="Priority 4">Priority 4</option>
+              </select>
+            </div>
+      
+      </div>
       <div className="main-cont">
-        <div className="right-addbtn">
-          <button className="addbtn" onClick={() => setShowAddForm(true)}>
-            <IoMdAdd className="icon" /> Add Task
-          </button>{" "}
-          <br />
-          <h3>
-            {filter.charAt(0).toUpperCase()}
-            {filter.slice(1)}
-          </h3>
+      <div className="add-cont">
+              <button className="addbtn" onClick={() => setShowInputContainer(true)}>
+                <IoMdAddCircle className="plusAdd mr-1" /> Add task
+              </button>
+            </div> <br/>
+            <h3>{filter}</h3> <br/>
+      {showInputContainer && (
+       
+        <div className="popup-overlay">
+        <div className="popup-container">
+          <div className="form-container">
+          <input
+             type="text"
+             placeholder="Title"
+             value={inputFields.title}
+             onChange={(e) => setInputFields({ ...inputFields, title: e.target.value })}
+           />
+            <textarea
+             placeholder="Description"
+             value={inputFields.description}
+             onChange={(e) => setInputFields({ ...inputFields, description: e.target.value })}
+           ></textarea>
+            <div>
+            <select
+             value={inputFields.priority}
+             onChange={(e) => setInputFields({ ...inputFields, priority: e.target.value })}
+           >
+             <option value="Priority 1">Priority 1</option>
+             <option value="Priority 2">Priority 2</option>
+             <option value="Priority 3">Priority 3</option>
+             <option value="Priority 4">Priority 4</option>
+           </select>
+           <input
+             type="date"
+             value={inputFields.date}
+             onChange={(e) => setInputFields({ ...inputFields, date: e.target.value })}
+           />
+            </div>
+            <div className="btndiv">
+            <button onClick={handleAddTodo}>Add</button>
+           <button onClick={() => setShowInputContainer(false)}>Close</button>
+            </div>
+          </div>
         </div>
+      </div>
+      )}
 
-        {/* Add Task Form */}
-        {showAddForm && (
-          <div className="popup-overlay">
-            <div className="popup-container">
-              <div className="form-container">
-                <input
-                  type="text"
-                  placeholder="Title"
-                  value={newTask.title}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, title: e.target.value })
-                  }
-                  className="mt-2"
-                />
-                <textarea
-                  className="mt-3"
-                  placeholder="Description"
-                  value={newTask.description}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, description: e.target.value })
-                  }
-                />
-                <div>
-                  <select
-                    className="mt-3"
-                    value={newTask.priority}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, priority: e.target.value })
-                    }
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                  <DatePicker
-                    selected={newTask.day}
-                    onChange={(date) => setNewTask({ ...newTask, day: date })}
-                    className="mt-3 datepicker"
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-                <div className="btndiv">
-                  <button onClick={addTask}>Add</button>
-                  <button onClick={() => setShowAddForm(false)}>Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <ul className="ul-list-cont">
+                {searchedTasks.map((todo) => (
 
-        {/* Edit Task Form */}
-        {editTaskData && (
-          <div className="popup-overlay">
-            <div className="popup-container">
-              <div className="form-container">
-                <input
-                  type="text"
-                  placeholder="Enter a new Title"
-                  value={editTaskData.title}
-                  onChange={(e) =>
-                    setEditTaskData({ ...editTaskData, title: e.target.value })
-                  }
-                  className="mt-2"
-                />
-                <textarea
-                  className="mt-3"
-                  placeholder="Enter a new Description"
-                  value={editTaskData.description}
-                  onChange={(e) =>
-                    setEditTaskData({
-                      ...editTaskData,
-                      description: e.target.value,
-                    })
-                  }
-                />
-                <div>
-                  <select
-                    className="mt-3"
-                    value={editTaskData.priority}
-                    onChange={(e) =>
-                      setEditTaskData({ ...editTaskData, priority: e.target.value })
-                    }
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                  <DatePicker
-                    selected={editTaskData.day}
-                    onChange={(date) =>
-                      setEditTaskData({ ...editTaskData, day: date })
-                    }
-                    className="mt-3"
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-                <div className="btndiv">
-                  <button onClick={saveEditTask}>Save</button>
-                  <button onClick={() => setEditTaskData(null)}>Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Task List */}
-          <ul className="ul-list-cont">
-            {searchedTasks.map((task) => {
-              const taskDate = new Date(task.day);
-              const formattedDate = taskDate.toLocaleDateString(); // e.g., "01/08/2025"
-              const formattedDay = taskDate.toLocaleDateString(undefined, { weekday: "long" }); // e.g., "Wednesday"
-
-              return (
-                <li className="list-cont" key={task.id}>
-                  <div className="save-cont">
-                    <div className="list-upper-part">
-                      {/* <p>
-                        {formattedDate} - {formattedDay}
-                      </p> */}
-                      <p>
-                        {task.priority}
+                  <li key={todo.id} className={todo.completed ? "completed" : ""}>
+                    <div className="save-cont">
+                      <div className="title-des-comment-content">
+                      <div className="left-cont-check-des">
+                      <div className="checkbox-box">
+                      <input
+                        type="checkbox"
+                        checked={todo.completed}
+                        onChange={() => handleToggleComplete(todo.id)}
+                      />
+                      </div>
+                      <div className="title-des-comment-cont">
+                      <p style={{color:"black"}}>{todo.title}</p>
+                      <p>{todo.description}</p>
+                      <p>Date: {todo.date}</p>
+                      <p>Priority: {todo.priority}</p>
+                      <p className="cmnt">Comment:
+                      <ul>
+                      {todo.comments &&
+                        Object.keys(todo.comments).map((commentId) => (
+                          <li key={commentId}>
+                            {todo.comments[commentId]}
+                            <RiDeleteBack2Fill
+                                    style={{
+                                      margin: "8px",
+                                      color: "#a81f00",
+                                    }}
+                                    onClick={() => handleDeleteComment(todo.id, commentId)}
+                                  />
+                          </li>
+                        ))}
+                    </ul>
                       </p>
-                    </div>
-                    <div className="title-des-comment-content">
-                      <div className="left-cont-check-des">
-                        <div className="checkbox-box">
-                          <input
-                            type="checkbox"
-                            checked={task.completed}
-                            onChange={() => toggleCompletion(task.id, task.completed)}
-                          />
-                        </div>
-                        <div className="title-des-comment-cont">
-                          <h5>{task.title}</h5>
-                          <p>{task.description}</p>
-                          <p className="cmnt">Comment:</p>
-                          <ul className="commentul">
-                            <div className="comment-box">
-                              {task.comments?.map((comment, index) => (
-                                <li key={index}>
-                                  {comment}
-                                  <RiDeleteBack2Fill
-                                    style={{
-                                      margin: "8px",
-                                      color: "#a81f00",
-                                    }}
-                                    onClick={() => deleteComment(task.id, index)}
-                                  />
-                                </li>
-                              ))}
-                            </div>
-                          </ul>
-                        </div>
+                      
+                      </div>
                       </div>
                       <div className="functionbtn">
-                        <FaEdit className="icon" onClick={() => setEditTaskData(task)} />
-                        <MdDelete className="icon" onClick={() => deleteTask(task.id)} />
-                        <FaComment
+                        <button className="editbtn" onClick={() => handleEditTodo(todo.id)}>Edit</button>
+                        <button className="deletebtn"  onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+                        <FaRegComment
                           className="icon"
-                          onClick={() =>
-                            addComment(task.id, prompt("Add comment") || "")
-                          }
+                          onClick={() => handleAddComment(todo.id, prompt("Enter comment:"))}
                         />
                       </div>
+                      </div>
+                   
                     </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+               
+                ))}
+        </ul>
 
       </div>
+      
+
+     
+     
     </div>
     </div>
-
-     {/* Mobile View************************************************************************************** */}
-
-      <div className="m-view">
-        <div className="toggle">
-        <div>
-            {/* Toggle Button */}
-            <button
-              className="toggle-btn"
-              onClick={() => setSidebarVisible(!isSidebarVisible)}
-            >
-              {isSidebarVisible ? (
-                <MdOutlineNavigateNext />
-              ) : (
-                <MdOutlineNavigateNext />
-              )}
-            </button>
-
-            {/* Sidebar */}
-            {isSidebarVisible && (
-             <div className="sidebar-main-cont">
-             <div className="add-cont">
-               <button className="addbtn" onClick={() => setShowAddForm(true)}>
-                 <IoMdAddCircle className="plusAdd mr-1" /> Add task
-               </button>
-             </div>
-             <div>
-               <input
-                 type="text"
-                 placeholder="Search by title"
-                 value={searchQuery}
-                 onChange={(e) => setSearchQuery(e.target.value)}
-                 className="m-2 searchinput"
-               />
-             </div>
-     
-             <div className="side-button">
-               <div className="side-btn-cont">
-                 <button onClick={() => setFilter("inbox")}>
-                   <FaInbox className="icons mr-2" />
-                   Inbox
-                 </button>
-               </div>
-               <div className="side-btn-cont">
-                 <button onClick={() => setFilter("completed")}>
-                   <MdOutlineTaskAlt className="icons mr-2" /> Completed
-                 </button>
-               </div>
-               <div className="side-btn-cont">
-                 <button onClick={() => setFilter("today")}>
-                   <MdToday className="icons mr-2" />
-                   Today
-                 </button>
-               </div>
-               <div className="side-btn-cont">
-                 <button onClick={() => setFilter("tomorrow")}>
-                   <HiMiniCalendarDays className="icons mr-2" />
-                   Tomorrow
-                 </button>
-               </div>
-               <div className="side-btn-cont">
-                 <button onClick={() => setFilter("upcoming")}>
-                   <IoTodayOutline className="icons mr-2" />
-                   Upcoming
-                 </button>
-               </div>
-             </div>
-     
-             <div className="priority-section">
-               <select
-                 value={priorityFilter}
-                 onChange={(e) => setPriorityFilter(e.target.value)}
-               >
-                 <option value="all">All Priorities</option>
-                 <option value="Low">Low</option>
-                 <option value="Medium">Medium</option>
-                 <option value="High">High</option>
-               </select>
-             </div>
-           </div>
-            )}
-          </div>
-          <div className="main-cont-mob">
-          <div className="main-cont">
-        <div className="right-addbtn">
-          <button className="addbtn" onClick={() => setShowAddForm(true)}>
-            <IoMdAdd className="icon" /> Add Task
-          </button>{" "}
-          <br />
-          <h3>
-            {filter.charAt(0).toUpperCase()}
-            {filter.slice(1)}
-          </h3>
-        </div>
-
-        {/* Add Task Form */}
-        {showAddForm && (
-          <div className="popup-overlay">
-            <div className="popup-container">
-              <div className="form-container">
-                <input
-                  type="text"
-                  placeholder="Title"
-                  value={newTask.title}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, title: e.target.value })
-                  }
-                  className="mt-2"
-                />
-                <textarea
-                  className="mt-3"
-                  placeholder="Description"
-                  value={newTask.description}
-                  onChange={(e) =>
-                    setNewTask({ ...newTask, description: e.target.value })
-                  }
-                />
-                <div>
-                  <select
-                    className="mt-3"
-                    value={newTask.priority}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, priority: e.target.value })
-                    }
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                  <DatePicker
-                    selected={newTask.day}
-                    onChange={(date) => setNewTask({ ...newTask, day: date })}
-                    className="mt-3"
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-                <div className="btndiv">
-                  <button onClick={addTask}>Add</button>
-                  <button onClick={() => setShowAddForm(false)}>Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Edit Task Form */}
-        {editTaskData && (
-          <div className="popup-overlay">
-            <div className="popup-container">
-              <div className="form-container">
-                <input
-                  type="text"
-                  placeholder="Enter a new Title"
-                  value={editTaskData.title}
-                  onChange={(e) =>
-                    setEditTaskData({ ...editTaskData, title: e.target.value })
-                  }
-                  className="mt-2"
-                />
-                <textarea
-                  className="mt-3"
-                  placeholder="Enter a new Description"
-                  value={editTaskData.description}
-                  onChange={(e) =>
-                    setEditTaskData({
-                      ...editTaskData,
-                      description: e.target.value,
-                    })
-                  }
-                />
-                <div>
-                  <select
-                    className="mt-3"
-                    value={editTaskData.priority}
-                    onChange={(e) =>
-                      setEditTaskData({ ...editTaskData, priority: e.target.value })
-                    }
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                  <DatePicker
-                    selected={editTaskData.day}
-                    onChange={(date) =>
-                      setEditTaskData({ ...editTaskData, day: date })
-                    }
-                    className="mt-3"
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-                <div className="btndiv">
-                  <button onClick={saveEditTask}>Save</button>
-                  <button onClick={() => setEditTaskData(null)}>Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Task List */}
-          <ul className="ul-list-cont">
-            {searchedTasks.map((task) => {
-              const taskDate = new Date(task.day);
-              const formattedDate = taskDate.toLocaleDateString(); // e.g., "01/08/2025"
-              const formattedDay = taskDate.toLocaleDateString(undefined, { weekday: "long" }); // e.g., "Wednesday"
-
-              return (
-                <li className="list-cont" key={task.id}>
-                  <div className="save-cont">
-                    <div className="list-upper-part">
-                      {/* <p>
-                        {formattedDate} - {formattedDay}
-                      </p> */}
-                      <p>Priority: {task.priority}</p>
-                    </div>
-                    <div className="title-des-comment-content">
-                      <div className="left-cont-check-des">
-                        <div className="checkbox-box">
-                          <input
-                            type="checkbox"
-                            checked={task.completed}
-                            onChange={() => toggleCompletion(task.id, task.completed)}
-                          />
-                        </div>
-                        <div className="title-des-comment-cont">
-                          <h5>{task.title}</h5>
-                          <p>{task.description}</p>
-                          <p className="cmnt">Comment:</p>
-                          <ul className="commentul">
-                            <div className="comment-box">
-                              {task.comments?.map((comment, index) => (
-                                <li key={index}>
-                                  {comment}
-                                  <RiDeleteBack2Fill
-                                    style={{
-                                      margin: "8px",
-                                      color: "#a81f00",
-                                    }}
-                                    onClick={() => deleteComment(task.id, index)}
-                                  />
-                                </li>
-                              ))}
-                            </div>
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="functionbtn">
-                        <FaEdit className="icon" onClick={() => setEditTaskData(task)} />
-                        <MdDelete className="icon" onClick={() => deleteTask(task.id)} />
-                        <FaComment
-                          className="icon"
-                          onClick={() =>
-                            addComment(task.id, prompt("Add comment") || "")
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-
-      </div>
-          </div>
-        </div>
-      </div>
-
-      </>
-
-    
   );
 };
 
-export default Todolist;
-
+export default TodoList;
