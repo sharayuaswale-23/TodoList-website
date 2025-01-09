@@ -30,43 +30,21 @@ const Home = ()=>{
     
     return(
 
-       <div className='home-cont'>
 
-                <div className='myhome'>
-
-                    <div className='left'>
-                    </div>
-
-                                <div className='right'>
-
-                                <div className='logbtn'>
-
-                                    <button className='mylogoutbtn' onClick={onLogoutTodo}> LogOut </button> 
-
-                                    </div>
-                                
-
-                                    <div className='info'>
-
-                                            <span className='head'> Bulid Your  </span>
-
-                                            <span className='todo'>  To-Do List </span>
-
-                                            <br/>
-
-                                            <h4> Simple tool to organise everything </h4>
-
-                                            <p className='para'> <b> Add your daily tasks in a powerful tool that helps you organize and prioritize your tasks. </b> </p>
-
-                                            <button className='mybtn' onClick={onGetStartedToDo}> Get Started </button>
-                                            
-                                    </div>
-                                    
-
-                                </div>
-
-                </div>
-       </div>
+    <div className='home-main-cont'>
+        <div className='left-blank'></div>
+        <div className='right-cont'>
+            <div className='top-cont'>
+                <button className='btn btn-danger'>Log Out</button>
+            </div>
+            <div className='lower-cont'>
+                <h2>Build Your <span>To-Do List</span></h2>
+                <h4>Simple tool to organize everything</h4> <br/>
+                <p>Add your daily tasks in a powerful tool that helps you organize and prioritize your tasks.</p>
+                <button onClick={onGetStartedToDo} className='startbtn'>Get Started</button>
+            </div>
+        </div>
+    </div>
 
     )
 }

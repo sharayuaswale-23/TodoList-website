@@ -1,127 +1,27 @@
-.signup-container {
+.signup-main-cont{
+  height: 100vh;
   width: 100%;
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  padding-top: 15%;
 }
-
-.signup-cont {
+.signup-cont{
   width: 40%;
-  height: 100%;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  padding: 2%;
+}
+.formsubmit h3{
   text-align: center;
-}
-
-.signup-form {
-  width: 100%;
-  padding-bottom: 20px;
-}
-
-.heading {
   font-weight: bold;
   color: #a81f00;
-  margin-bottom: 20px;
 }
-
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
+.formsubmit p{
+text-align: center;
 }
-
-label {
-  padding-left: 4px;
-  font: bold;
+@media (max-width: 768px){
+.signup-cont{
+  width: 70%;
 }
-
-input.form-control {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.myform {
-  margin-top: 15px;
-}
-
-
-@media (min-width: 375px) {
-
-  .signup-cont{
-    width: 100%;
-    
-  }
-  
-}
-
-@media (min-width: 768px) {
-
-  .signup-container{
-    padding-top: 10%;
-  }
-
-  .signup-cont{
-    width: 60%;
-  }
-
-  .signup-form {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-  }
-}
-@media (min-width: 1024px) {
-
-  .signup-container{
-    padding-top: 5%;
-    width: 100%;
-  }
-
-  .signup-cont {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-  }
-
-  .signup-form {
-      padding: 20px;
-      width: 80%;
-  }
-
-}
-
-@media (min-width: 1440px) {
-
-  .signup-cont{
-    width: 50%;
-  }
-
-  .heading {
-      font-size: 30px;
-      font-weight: 600;
-      color: #a81f00;
-  }
-
-  button.btn {
-      color: white;
-      background-color:  #a81f00ce;
-      border: none;
-      outline: none;
-  }
-  button.btn:hover{
-    background-color:  #a81f00;
-    color: white;
-  }
-
 }

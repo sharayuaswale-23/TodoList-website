@@ -95,44 +95,36 @@ const SignUp = ()=> {
 
     return(
 
-        <div className='signup-container'>
-
-                <div className='signup-cont'>
-
-
-                        <div className='signup-form'>
-
-                            <form onSubmit={onSubmitUserData}>
-
-                                <h3 className='heading'> SignUp </h3>
-                                <div className="form-group">
+        <div className='signup-main-cont'>
+            <div className='signup-cont'>
+               
+                <form className='formsubmit' onSubmit={onSubmitUserData}>
+                <h3>SignUp</h3>
+                <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Email</label>
                                     <input onChange={ (e) => setEmail(e.target.value)} type="email" value={email} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail2">Confirm Email {error && <span style={{ color: 'red' }}>{error}</span>} </label> 
                                 
-                                    <input onChange={ (e) => setConfirmemail(e.target.value)} type="email"  value={confirmEmail} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
+                                 <input onChange={ (e) => setConfirmemail(e.target.value)} type="email"  value={confirmEmail} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="exampleInputPassword1">Password </label>
                                     <input  onChange={ (e) => setPassword(e.target.value)} type="password" value={password} className="form-control" id="exampleInputPassword1" required/>
                                 </div>
-                             
-                                <div className="form-group">
-                                    <label htmlFor="exampleInputPassword2"> Confirm Password   {error2 && <span style={{ color: 'red' }}>{error2}</span>}
-                                    </label>
-                                    <input  onChange={ (e) => setConfirmpassword(e.target.value)} type="password"  value={confirmPassword} className="form-control" id="exampleInputPassword1" required/>
+                                   <div className="form-group">
+                                 <label htmlFor="exampleInputPassword2"> Confirm Password   {error2 && <span style={{ color: 'red' }}>{error2}</span>}
+                                 </label>
+                                 <input  onChange={ (e) => setConfirmpassword(e.target.value)} type="password"  value={confirmPassword} className="form-control" id="exampleInputPassword1" required/>
                                 </div>
 
-                                <button type="submit" className="btn w-100"> SignUp </button>
+                                <button type="submit" className="btn w-100"> SignUp </button> <br/><br/>
 
                                 <p className='myform'> Already Registered? <Link to={"/"}> Login </Link> </p>
-                            </form>
-
-                        </div>     
-                </div>
-        </div>        
+                </form>
+            </div>
+        </div>
     )
 }
 
