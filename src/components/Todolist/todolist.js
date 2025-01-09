@@ -77,6 +77,7 @@ const TodoList = () => {
     });
     setInputFields({ title: "", description: "", priority: "Priority 1", date: "" });
     setShowInputContainer(false);
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleDeleteTodo = (id) => {
@@ -138,6 +139,31 @@ const TodoList = () => {
     todo.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const inboxclick = ()=>{
+    setFilter("Inbox");
+    setIsSidebarOpen(!isSidebarOpen);
+  }
+
+  const completeclick = ()=>{
+    setFilter("Completed");
+    setIsSidebarOpen(!isSidebarOpen);
+  }
+
+  const todayclick = ()=>{
+    setFilter("Today");
+    setIsSidebarOpen(!isSidebarOpen);
+  }
+
+  const tomorrowclick = ()=>{
+    setFilter("Tomorrow");
+    setIsSidebarOpen(!isSidebarOpen);
+  }
+
+  const upcomingclick = ()=>{
+    setFilter("Upcoming");
+    setIsSidebarOpen(!isSidebarOpen);
+  }
+
   return (
     <div className="lap-view">
         
@@ -164,30 +190,30 @@ const TodoList = () => {
             </div>
       <div className="side-button">
       <div className="side-btn-cont">
-                <button onClick={() => setFilter("Inbox")}>
+                <button onClick={inboxclick}>
                   <FaInbox className="icons mr-2 mt-1" />
                   Inbox
                 </button>
               </div>
               <div className="side-btn-cont">
-                <button onClick={() => setFilter("Completed")}>
+                <button onClick={completeclick}>
                   <MdOutlineTaskAlt className=" icons mr-2 mt-1" /> Completed
                 </button>
               </div>
               <div className="side-btn-cont">
-                <button onClick={() => setFilter("Today")}>
+                <button onClick={todayclick}>
                   <MdToday className="icons mr-2 mt-1" />
                   Today
                 </button>
               </div>
               <div className="side-btn-cont">
-                <button onClick={() => setFilter("Tomorrow")}>
+                <button onClick={tomorrowclick}>
                   <HiMiniCalendarDays className="icons mr-2 mt-1" />
                   Tomorrow
                 </button>
               </div>
               <div className="side-btn-cont">
-                <button onClick={() => setFilter("Upcoming")}>
+                <button onClick={upcomingclick}>
                   <IoTodayOutline className="icons mr-2 mt-1" />
                   Upcoming
                 </button>
@@ -200,7 +226,8 @@ const TodoList = () => {
                     <input
                       type="date"
                       value={selectedDate}
-                      onChange={(e) => setSelectedDate(e.target.value)}
+                      onChange={(e) => setSelectedDate(e.target.value)
+                      }
                     />
                   )}
               <select
